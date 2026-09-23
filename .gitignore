@@ -1,0 +1,25 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# AWS credentials (never commit these!)
+.aws/
+
+# Environment files
+.env
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Zip files (for Lambda deployments)
+*.zip
