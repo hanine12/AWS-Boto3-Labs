@@ -23,3 +23,4 @@ Thumbs.db
 
 # Zip files (for Lambda deployments)
 *.zip
+session.bat
