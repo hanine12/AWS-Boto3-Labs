@@ -46,8 +46,20 @@ def list_buckets():
         return
     for b in buckets:
         print(f"{b['Name']:<40} created {b['CreationDate']:%Y-%m-%d}")
+
 def upload_file():
-    print("upload_file() called")
+    path = input("Local file path: ").strip()
+    bucket = input("Target bucket: ").strip()
+
+    if not os.path.isfile(path):
+        print(f"File not found: {path}")
+        return
+
+    default_key = os.path.basename(path)
+    key = input(f"Object key [{default_key}]: ").strip() or default_key
+
+    s3.upload_file(path, bucket, key)
+    print(f"Uploaded {path} -> s3://{bucket}/{key}")
 
 def list_objects():
     print("list_objects() called")
