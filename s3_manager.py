@@ -120,7 +120,22 @@ def generate_presigned_url():
     print(f"\nValid for {expires} seconds:\n{url}\n")
 
 def delete_bucket():
-    print("delete_bucket() called")
+    name = input("Bucket to delete: ").strip()
+    confirm = input(f"Type the bucket name again to confirm deletion: ").strip()
+
+    if confirm != name:
+        print("Names didn't match — deletion cancelled.")
+        return
+
+    try:
+        s3.delete_bucket(Bucket=name)
+        print(f"Deleted bucket '{name}'")
+    except ClientError as e:
+        code = e.response["Error"]["Code"]
+        if code == "BucketNotEmpty":
+            print("Bucket is not empty. Delete all objects first (option 6, or list with option 4 and remove each).")
+        else:
+            print(f"[AWS ERROR] {code}")
 
 def backup_folder():
     print("backup_folder() called")
