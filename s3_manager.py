@@ -19,11 +19,33 @@ MENU = """
 """
 
 def create_bucket():
-    print("create_bucket() called")
+    name = input("New bucket name: ").strip()
+    try:
+        if REGION == "us-east-1":
+            s3.create_bucket(Bucket=name)
+        else:
+            s3.create_bucket(
+                Bucket=name,
+                CreateBucketConfiguration={"LocationConstraint": REGION},
+            )
+        print(f"Created bucket '{name}'")
+    except ClientError as e:
+        code = e.response["Error"]["Code"]
+        if code == "BucketAlreadyExists":
+            print("That name is taken by another AWS account.")
+        elif code == "BucketAlreadyOwnedByYou":
+            print("You already own that bucket.")
+        else:
+            print(f"[AWS ERROR] {code}")
 
 def list_buckets():
-    print("list_buckets() called")
-
+    response = s3.list_buckets()
+    buckets = response.get("Buckets", [])
+    if not buckets:
+        print("(no buckets)")
+        return
+    for b in buckets:
+        print(f"{b['Name']:<40} created {b['CreationDate']:%Y-%m-%d}")
 def upload_file():
     print("upload_file() called")
 
