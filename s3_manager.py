@@ -87,10 +87,24 @@ def list_objects():
 
         
 def download_file():
-    print("download_file() called")
+    bucket = input("Bucket name: ").strip()
+    key = input("Object key: ").strip()
+    dest = input("Save as: ").strip() or os.path.basename(key)
+
+    try:
+        s3.download_file(bucket, key, dest)
+        print(f"Downloaded -> {dest}")
+    except ClientError as e:
+        if e.response["Error"]["Code"] == "404":
+            print("That object does not exist.")
+        else:
+            raise
 
 def delete_file():
-    print("delete_file() called")
+    bucket = input("Bucket name: ").strip()
+    key = input("Object key: ").strip()
+    s3.delete_object(Bucket=bucket, Key=key)
+    print(f"Deleted s3://{bucket}/{key}")
 
 def generate_presigned_url():
     print("generate_presigned_url() called")
