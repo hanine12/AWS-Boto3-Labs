@@ -102,7 +102,27 @@ def download_file():
 
 def delete_file():
     bucket = input("Bucket name: ").strip()
-    key = input("Object key: ").strip()
+    key = input("Object key (or 'all' to delete everything in the bucket): ").strip()
+
+    if key.lower() == "all":
+        confirm = input(f"Type '{bucket}' again to confirm deleting ALL objects: ").strip()
+        if confirm != bucket:
+            print("Names didn't match — cancelled.")
+            return
+
+        paginator = s3.get_paginator("list_objects_v2")
+        deleted = 0
+        for page in paginator.paginate(Bucket=bucket):
+            objects = page.get("Contents", [])
+            if not objects:
+                continue
+            keys = [{"Key": obj["Key"]} for obj in objects]
+            s3.delete_objects(Bucket=bucket, Delete={"Objects": keys})
+            deleted += len(keys)
+
+        print(f"Deleted {deleted} object(s) from '{bucket}'.")
+        return
+
     s3.delete_object(Bucket=bucket, Key=key)
     print(f"Deleted s3://{bucket}/{key}")
 
@@ -138,7 +158,31 @@ def delete_bucket():
             print(f"[AWS ERROR] {code}")
 
 def backup_folder():
-    print("backup_folder() called")
+    folder = input("Local folder to back up: ").strip()
+    bucket = input("Target bucket: ").strip()
+    prefix = input("Key prefix (e.g. backup/): ").strip()
+
+    if not os.path.isdir(folder):
+        print(f"Folder not found: {folder}")
+        return
+
+    successes = 0
+    failures = 0
+
+    for root, dirs, files in os.walk(folder):
+        for filename in files:
+            local_path = os.path.join(root, filename)
+            relative = os.path.relpath(local_path, folder)
+            key = prefix + relative.replace(os.sep, "/")
+
+            try:
+                s3.upload_file(local_path, bucket, key)
+                successes += 1
+            except (ClientError, OSError) as e:
+                print(f"Failed: {local_path} ({e})")
+                failures += 1
+
+    print(f"\nBackup complete: {successes} succeeded, {failures} failed.")
 
 ACTIONS = {
     "1": create_bucket,
