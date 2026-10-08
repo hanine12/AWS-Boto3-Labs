@@ -53,4 +53,24 @@ def launch_instance(name):
     state= reponse['Instances'][0]['State']['Name']
     print(f"Instance launched: {instance_id} with state: {state}")
     return instance_id
+
+
+def wait_running(instance_id):
+    try:
+        print("Waiting for the instance to reach 'running' ...")
+        waiter = ec2.get_waiter('instance_running')
+        waiter.wait(
+            InstanceIds=[instance_id],
+            WaiterConfig={
+                'Delay': 15,
+                'MaxAttempts': 40,
+            }
+        )
+    except WaiterError as e:
+        print("timed out . check the Console")
+        return 
+
+    detail= ec2.describe_instances(InstanceIds=[instance_id])
+    running= detail['Reservations'][0]['Instances'][0]
+    print("Public IP address: ", running.get('PublicIpAddress', 'not assigned'))
     
