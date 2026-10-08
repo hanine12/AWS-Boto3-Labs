@@ -29,3 +29,28 @@ def get_latest_amazon_linux_ami():
                  "al2023-ami-kernel-default-x86_64")
     response = ssm.get_parameter(Name=parameter)
     return response['Parameter']['Value']
+
+def launch_instance(name):
+    ami_id = get_latest_amazon_linux_ami()
+    print(f"Using latest Amazon Linux 2023 AMI: {ami_id}")
+
+    reponse = ec2.run_instances(
+        ImageId=ami_id,
+        InstanceType='t3.micro',
+        MinCount=1,
+        MaxCount=1,
+        KeyName="vockey",
+        TagSpecifications=[
+            {
+                'ResourceType': 'instance',
+                'Tags': [
+                    {'Key': 'Name', 'Value': name},
+                    {'Key' : "CreatedBy", 'Value' : "boto3-lab"},
+                ],
+            }
+        ],)
+    instance_id = reponse['Instances'][0]['InstanceId']
+    state= reponse['Instances'][0]['State']['Name']
+    print(f"Instance launched: {instance_id} with state: {state}")
+    return instance_id
+    
