@@ -23,4 +23,9 @@ def list_instances():
               f"{inst['State']['Name']:<12} "
               f"{inst.get('PublicIpAddress', '-'):<16} "
               f"{tags.get('Name', '(no name)')}")
-        
+
+def get_latest_amazon_linux_ami():
+    parameter = ("/aws/service/ami-amazon-linux-latest/"
+                 "al2023-ami-kernel-default-x86_64")
+    response = ssm.get_parameter(Name=parameter)
+    return response['Parameter']['Value']
