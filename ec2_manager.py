@@ -73,4 +73,23 @@ def wait_running(instance_id):
     detail= ec2.describe_instances(InstanceIds=[instance_id])
     running= detail['Reservations'][0]['Instances'][0]
     print("Public IP address: ", running.get('PublicIpAddress', 'not assigned'))
-    
+
+
+def start_instance(instance_id):
+    r= ec2.start_instances(InstanceIds=[instance_id])
+    change= r['StartingInstances'][0]
+    print(change["PreviousState"]["Name"], "->", change["CurrentState"]["Name"])
+    ec2.get_waiter('instance_running').wait(InstanceIds=[instance_id])
+
+def stop_instance(instance_id):
+    r= ec2.stop_instances(InstanceIds=[instance_id])
+    change= r['StoppingInstances'][0]
+    print(change["PreviousState"]["Name"], "->", change["CurrentState"]["Name"])
+    ec2.get_waiter('instance_stopped').wait(InstanceIds=[instance_id])
+
+def reboot_instance(instance_id):
+    r= ec2.reboot_instances(InstanceIds=[instance_id])
+    change= r["RebootingInstances"][0] if "RebootInstances" in r else None
+    if change:
+        print(change["PreviousSatet"]["Name"], "->", change["CurrentState"]["Name"])
+        
