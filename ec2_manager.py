@@ -169,3 +169,34 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def cleanup():
+    reponse = ec2.describe_instances(
+        Filters=[
+            {
+                'Name': 'tag:CreatedBy',
+                'Values': ['boto3-lab']
+            },
+            {
+                'Name': 'instance-state-name',
+                'Values': ['pending','stopping','running', 'stopped']
+            }
+        ])
+    ids = [
+        instance['InstanceId']
+        for reservation in reponse['Reservations']
+        for instance in reservation['Instances']
+    ]
+    if not ids:
+        print("nothing to cleanup")
+        return
+    print("These instances will be terminated: ")
+    for i in ids:
+        print("  ", i)
+
+    if input("Are you sure? (y/n) ").strip().lower() != 'y':
+        ec2.terminate_instances(InstanceIds=ids)
+        print("waiting for instances to terminate ...")
+        ec2.get_waiter('instance_terminated').wait(InstanceIds=ids)
+        print(f"terminated {len(ids)} instance(s).")
