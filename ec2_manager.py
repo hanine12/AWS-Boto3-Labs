@@ -100,17 +100,17 @@ def describe_instance(instance_id):
     tags= {t['Key']: t['Value'] for t in instance.get('Tags', [])}
 
 
-    print(f"ID:           {inst['InstanceId']}")
+    print(f"ID:           {instance['InstanceId']}")
     print(f"Name:         {tags.get('Name', '(no name)')}")
-    print(f"State:        {inst['State']['Name']}")
-    print(f"Type:         {inst['InstanceType']}")
-    print(f"AMI:          {inst['ImageId']}")
-    print(f"AZ:           {inst['Placement']['AvailabilityZone']}")
-    print(f"Public IP:    {inst.get('PublicIpAddress', '-')}")
-    print(f"Private IP:   {inst.get('PrivateIpAddress', '-')}")
-    print(f"Key pair:     {inst.get('KeyName', '-')}")
-    print(f"Launch time:  {inst['LaunchTime']}")
-    print(f"Security groups: {[g['GroupName'] for g in inst['SecurityGroups']]}")
+    print(f"State:        {instance['State']['Name']}")
+    print(f"Type:         {instance['InstanceType']}")
+    print(f"AMI:          {instance['ImageId']}")
+    print(f"AZ:           {instance['Placement']['AvailabilityZone']}")
+    print(f"Public IP:    {instance.get('PublicIpAddress', '-')}")
+    print(f"Private IP:   {instance.get('PrivateIpAddress', '-')}")
+    print(f"Key pair:     {instance.get('KeyName', '-')}")
+    print(f"Launch time:  {instance['LaunchTime']}")
+    print(f"Security groups: {[g['GroupName'] for g in instance['SecurityGroups']]}")
     print("Tags:")
     for k, v in tags.items():
         print(f"  {k} = {v}")
@@ -122,3 +122,50 @@ def tag_instance(instance_id, key, value):
         Tags=[{'Key': key, 'Value': value}]
     )
     print(f"Tag added: {key} = {value}")
+
+
+def main():
+    while True:
+        print("\n1. List instances")
+        print("2. Launch instance")
+        print("3. Start instance")
+        print("4. Stop instance")
+        print("5. Reboot instance")
+        print("6. Describe instance")
+        print("7. Tag instance")
+        print("8. Get latest AMI")
+        print("9. Cleanup (terminate all boto3-lab instances)")
+        print("0. Exit")
+
+        choice = input("Choose an option: ").strip()
+
+        if choice == "1":
+            list_instances()
+        elif choice == "2":
+            name = input("Name tag for the instance: ").strip()
+            iid = launch_instance(name)
+            wait_running(iid)
+        elif choice == "3":
+            start_instance(input("Instance ID: ").strip())
+        elif choice == "4":
+            stop_instance(input("Instance ID: ").strip())
+        elif choice == "5":
+            reboot_instance(input("Instance ID: ").strip())
+        elif choice == "6":
+            describe_instance(input("Instance ID: ").strip())
+        elif choice == "7":
+            iid = input("Instance ID: ").strip()
+            key = input("Tag key: ").strip()
+            val = input("Tag value: ").strip()
+            tag_instance(iid, key, val)
+        elif choice == "8":
+            print(get_latest_amazon_linux_ami())
+        elif choice == "9":
+            cleanup()
+        elif choice == "0":
+            break
+        else:
+            print("Unknown option.")
+
+if __name__ == "__main__":
+    main()
