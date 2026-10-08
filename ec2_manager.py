@@ -92,4 +92,33 @@ def reboot_instance(instance_id):
     change= r["RebootingInstances"][0] if "RebootInstances" in r else None
     if change:
         print(change["PreviousSatet"]["Name"], "->", change["CurrentState"]["Name"])
-        
+
+
+def describe_instance(instance_id):
+    d= ec2.describe_instances(InstanceIds=[instance_id])
+    instance= d['Reservations'][0]['Instances'][0]
+    tags= {t['Key']: t['Value'] for t in instance.get('Tags', [])}
+
+
+    print(f"ID:           {inst['InstanceId']}")
+    print(f"Name:         {tags.get('Name', '(no name)')}")
+    print(f"State:        {inst['State']['Name']}")
+    print(f"Type:         {inst['InstanceType']}")
+    print(f"AMI:          {inst['ImageId']}")
+    print(f"AZ:           {inst['Placement']['AvailabilityZone']}")
+    print(f"Public IP:    {inst.get('PublicIpAddress', '-')}")
+    print(f"Private IP:   {inst.get('PrivateIpAddress', '-')}")
+    print(f"Key pair:     {inst.get('KeyName', '-')}")
+    print(f"Launch time:  {inst['LaunchTime']}")
+    print(f"Security groups: {[g['GroupName'] for g in inst['SecurityGroups']]}")
+    print("Tags:")
+    for k, v in tags.items():
+        print(f"  {k} = {v}")
+
+
+def tag_instance(instance_id, key, value):
+    ec2.create_tags(
+        Resources=[instance_id],
+        Tags=[{'Key': key, 'Value': value}]
+    )
+    print(f"Tag added: {key} = {value}")
