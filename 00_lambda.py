@@ -8,9 +8,9 @@ import boto3
 Needs lambda_function.py in the same folder.
 """
 
-
-sts = boto3.client("sts")
-lambda_client = boto3.client("lambda")
+REGION = "us-east-1"
+sts = boto3.client("sts", region_name=REGION)
+lambda_client = boto3.client("lambda", region_name=REGION)
 
 account = sts.get_caller_identity()["Account"]
 role_arn = f"arn:aws:iam::{account}:role/LabRole"   # you cannot create IAM roles
