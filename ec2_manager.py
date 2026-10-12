@@ -19,7 +19,53 @@ def build_user_data(student_name):
     user_data = USER_DATA_TEMPLATE.replace("HANINE HOSNI", student_name)
     return user_data
 
+def deploy_web_server(student_name):
+    group_id = get_or_create_web_sg()
+    ami_id= get_latest_amazon_linux_ami()
+    user_data= build_user_data(student_name)
 
+    print(f"Using latest Amazon Linux 2023 AMI: {ami_id} ....")
+    response = ec2.run_instances(
+        ImageId=ami_id,
+        InstanceType='t3.micro',
+        MinCount=1,
+        MaxCount=1,
+        KeyName="vockey",
+        SecurityGroupIds=[group_id],
+        UserData=user_data,
+        TagSpecifications=[
+            {
+                'ResourceType': 'instance',
+                'Tags': [
+                    {'Key': 'Name', 'Value': "boto3-lab-web"},
+                    {'Key' : "CreatedBy", 'Value' : "boto3-lab"},
+                ],
+            }
+        ],)
+    instance_id = response['Instances'][0]['InstanceId']
+    print(f"Instance launched: {instance_id} ... waiting for it to reach 'running' state ...")
+    
+    ec2.get_waiter('instance_running').wait(InstanceIds=[instance_id],WaiterConfig={'Delay': 15, 'MaxAttempts': 40},)
+
+    print("instance state: running")
+
+
+    print("Waiting for status checks (OS boot) ...")
+    ec2.get_waiter("instance_status_ok").wait(
+        InstanceIds=[instance_id],
+        WaiterConfig={"Delay": 15, "MaxAttempts": 40},
+    )
+    print("Instance status is OK.")
+
+    
+    detail= ec2.describe_instances(InstanceIds=[instance_id])
+    inst=detail['Reservations'][0]['Instances'][0]
+    public_ip= inst.get('PublicIpAddress', None)
+    if not public_ip:
+        print("No public IP assigned — cannot print URL.")
+        return instance_id
+    url= f"http://{public_ip}/"
+    print(f"URL: {url}")
 
 def list_instances():
     paginator = ec2.get_paginator('describe_instances')
