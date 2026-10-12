@@ -1,9 +1,15 @@
 import boto3
 from botocore.exceptions import ClientError , WaiterError
 
+import urllib.request
+from datetime import datetime , timezone
+
 REGION = 'us-east-1'
 ec2 = boto3.client('ec2', region_name=REGION)
 ssm = boto3.client('ssm', region_name=REGION)
+
+
+
 
 
 def list_instances():
@@ -15,7 +21,7 @@ def list_instances():
                 for inst in reservation['Instances']:
                     rows.append(inst)
     for inst in rows:
-        if inst['State']['Name'] == 'terminated':
+        if inst['State'][' Name'] == 'terminated':
             continue
         tags = {t['Key']: t['Value'] for t in inst.get('Tags', [])}   
         print(f"{inst['InstanceId']:<21} "
@@ -154,6 +160,50 @@ def cleanup():
         print(f"terminated {len(ids)} instance(s).")
     else:
         print("cleanup aborted.")
+
+
+def get_or_create_web_sg():
+    existing = ec2.describe_security_groups(
+        Filters=[
+            {'Name': 'group-name', 'Values': ['boto3-lab-web-sg']},
+            {'Name': "tag:CreatedBy", "Values": ["boto3-lab"]},
+        ]
+    )
+    if existing['SecurityGroups']:
+        gid= existing['SecurityGroups'][0]['GroupId']
+        print(f"Reusing existing security group: {gid}")
+        return gid
+    sg= ec2.create_security_group(
+        GroupName="boto3-lab-web",
+        Description="Allow HTTP traffic to web server",
+        TagSpecifications=[
+            {
+                'ResourceType': 'security-group',
+                'Tags': [
+                    {'Key': 'CreatedBy', 'Value': 'boto3-lab'},
+                    {'Key': 'Name', 'Value': 'boto3-lab-web'},
+                ],
+            }
+        ],)
+    group_id= sg['GroupId']
+    print(f"Created security group: {group_id}")
+
+    ec2.authorize_security_group_ingress(
+        GroupId=group_id,
+        IpPermissions=[
+            {
+                'IpProtocol': 'tcp',
+                'FromPort': 80,
+                'ToPort': 80,
+                'IpRanges': [{'CidrIp': "0.0.0.0/0",
+                               'Description': "Allow HTTP traffic"}],
+            }
+        ]
+    )
+    print("Authorized HTTP traffic on port 80")
+    return group_id
+
+
 
 def main():
     while True:
