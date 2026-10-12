@@ -1,8 +1,14 @@
 import boto3
 from botocore.exceptions import ClientError, NoCredentialsError
 
+REGION = "us-east-1"
+
+# Single shared session — every client/resource inherits the region from it.
+session = boto3.Session(region_name=REGION)
+
+
 def show_identity():
-    sts = boto3.client("sts")
+    sts = session.client("sts")
     identity = sts.get_caller_identity()
     print(f"Account ID : {identity['Account']}")
     print(f"User ID    : {identity['UserId']}")
@@ -10,13 +16,12 @@ def show_identity():
 
 
 def show_region():
-    session = boto3.session.Session()
     print(f"Region  : {session.region_name}")
     print(f"Profile : {session.profile_name}")
 
 
 def list_buckets_with_client():
-    s3 = boto3.client("s3")
+    s3 = session.client("s3")
     response = s3.list_buckets()
 
     for bucket in response["Buckets"]:
@@ -25,36 +30,39 @@ def list_buckets_with_client():
 
     print(f"Total: {len(response['Buckets'])} bucket(s)")
 
+
 def list_buckets_with_resource():
-    s3= boto3.resource("s3")
+    s3 = session.resource("s3")
+    count = 0
     for bucket in s3.buckets.all():
         print(f"{bucket.name}")
+        count += 1
+    print(f"Total: {count} bucket(s)")
 
-
-#The resource version is shorter because Boto3 hides the response shape 
-# you iterate objects with attributes instead of digging through nested dictionaries.
 
 def list_instances():
-    ec2 = boto3.client("ec2")
+    ec2 = session.client("ec2")
     response = ec2.describe_instances()
 
     found_any = False
     for reservation in response["Reservations"]:
         for instance in reservation["Instances"]:
             found_any = True
-            tags= {t["Key"]: t["Value"] for t in instance.get("Tags", [])}
+            tags = {t["Key"]: t["Value"] for t in instance.get("Tags", [])}
             print(f"{instance['InstanceId']}  {instance['InstanceType']:<12}  "
-                f"{instance['State']['Name']:<12}  "
-                f"{tags.get('Name', '(no name)')}" )
+                  f"{instance['State']['Name']:<12}  "
+                  f"{tags.get('Name', '(no name)')}")
 
     if not found_any:
         print("No instances found.")
 
+
 def list_regions():
-    ec2 = boto3.client("ec2")
-    names= sorted([r["RegionName"] for r in ec2.describe_regions()["Regions"]]) 
+    ec2 = session.client("ec2")
+    names = sorted(r["RegionName"] for r in ec2.describe_regions()["Regions"])
     for i in range(0, len(names), 4):
-        print("  "+"".join(f"{n:<20}" for n in names[i:i+4]))
+        print("  " + "  ".join(f"{n:<20}" for n in names[i:i + 4]))
+
 
 def main():
     try:
@@ -96,14 +104,15 @@ def main():
         print("AVAILABLE AWS REGIONS")
         print("=" * 60)
         list_regions()
+
     except NoCredentialsError:
         print("[ERROR] No AWS credentials found. Please configure your AWS credentials.")
     except ClientError as e:
-        code = e.response['Error']['Code']
-        message = e.response['Error']['Message']
+        code = e.response["Error"]["Code"]
+        message = e.response["Error"]["Message"]
         print(f"[AWS ERROR] {code}: {message}")
         if code in {"ExpiredToken", "ExpiredTokenException"}:
-            print("Your AWS session token has expired. Please restart the lab .")
+            print("Your AWS session token has expired. Please restart the lab.")
 
 
 if __name__ == "__main__":
