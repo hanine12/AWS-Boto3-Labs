@@ -8,7 +8,16 @@ REGION = 'us-east-1'
 ec2 = boto3.client('ec2', region_name=REGION)
 ssm = boto3.client('ssm', region_name=REGION)
 
+USER_DATA_TEMPLATE = """#!/bin/bash
+yum update -y
+dnf install -y httpd
+echo "<h1>Hello from $(hostname -f)</h1><p>Deployed by HANINE HOSNI</p>" > /var/www/html/index.html
+systemctl enable --now httpd
+"""
 
+def build_user_data(student_name):
+    user_data = USER_DATA_TEMPLATE.replace("HANINE HOSNI", student_name)
+    return user_data
 
 
 
