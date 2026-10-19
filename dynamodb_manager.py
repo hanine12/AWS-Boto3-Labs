@@ -32,15 +32,45 @@ def create_table():
         else:
             raise
 
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+def add_student():
+    item = {
+        'student_id': input("Enter student ID: ").strip(),
+        'name': input("Enter student name: ").strip(),
+        'age': int(input("Enter student age: ").strip()),
+        'program': input("Enter student program: ").strip(),}
+
+    year = input("Enter student year: ").strip()
+    if year.isdigit():
+        item['year'] = int(year)
+
+    try:
+        table.put_item(
+            Item=item,
+            ConditionExpression='attribute_not_exists(student_id)'  # Ensure no duplicate student_id
+        )
+        print(f"Student {item['name']} added successfully.")
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
+            print(f"Student with ID {item['student_id']} already exists.")
+        else:
+            raise
+        
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 def main():
     while True:
         print("\nDynamoDB Manager")
         print("1. Create Table")
+        print("2. Add Student")
         print("0. Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
             create_table()
+        elif choice == '2':
+            add_student()
         elif choice == '0':
             print("Exiting...")
             break
