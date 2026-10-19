@@ -58,12 +58,25 @@ def add_student():
             raise
         
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def get_student():
+    student_id = input("Enter student ID: ").strip()
+    response = table.get_item(
+        Key={'student_id': student_id}
+    )
+    if 'Item'  not in response:
+        print(f"No student found with ID {student_id}.")
+        return
+
+    for key, value in response['Item'].items():
+        print(f"{key:<14}: {value}")
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def main():
     while True:
         print("\nDynamoDB Manager")
         print("1. Create Table")
         print("2. Add Student")
+        print("3. Get Student")
         print("0. Exit")
         choice = input("Enter your choice: ")
 
@@ -71,6 +84,8 @@ def main():
             create_table()
         elif choice == '2':
             add_student()
+        elif choice == '3':
+            get_student()
         elif choice == '0':
             print("Exiting...")
             break
