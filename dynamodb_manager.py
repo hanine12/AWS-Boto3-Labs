@@ -184,6 +184,18 @@ def search_students_query():
 
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def delete_table():
+    try:
+        table.delete()
+        print(f"Deleting table {table_name}...")
+        table.wait_until_not_exists()
+        print(f"Table {table_name} deleted successfully.")
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'ResourceNotFoundException':
+            print(f"Table {table_name} does not exist.")
+        else:
+            raise
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def main():
     while True:
@@ -196,6 +208,7 @@ def main():
         print("6. List Students")
         print("7. Search Students(query)")
         print("8. Search Students(scan)")
+        print("9. Delete Table")
         print("0. Exit")
         choice = input("Enter your choice: ")
 
@@ -215,6 +228,8 @@ def main():
             search_students_query()
         elif choice == '8':
             search_students_scan()
+        elif choice == '9':
+            delete_table()
         elif choice == '0':
             print("Exiting...")
             break
