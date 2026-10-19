@@ -116,6 +116,26 @@ def delete_student():
             raise
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def list_students():
+    items= []
+    scan_kwargs = {}
+
+    while True:
+        response = table.scan(**scan_kwargs)
+        items.extend(response.get('Items', []))
+
+        if 'LastEvaluatedKey' not in response:
+            break
+        scan_kwargs['ExclusiveStartKey'] = response['LastEvaluatedKey']
+
+    for item in sorted(items, key=lambda x: x['student_id']):
+        print(f"ID: {item['student_id']:<6}, Name: {item['name']:<9}, Age: {item.get('age', 'N/A')}, Program: {item.get('program', 'N/A')}, Year: {item.get('year', 'N/A')}")
+    student_count = len(items)
+    if student_count == 0:
+        print("No students found.")
+    else:
+        print(f"Total students: {len(items)}")
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def main():
     while True:
@@ -125,6 +145,7 @@ def main():
         print("3. Get Student")
         print("4. Update Student")
         print("5. Delete Student")
+        print("6. List Students")
         print("0. Exit")
         choice = input("Enter your choice: ")
 
@@ -138,6 +159,8 @@ def main():
             update_student()
         elif choice == '5':
             delete_student()
+        elif choice == '6':
+            list_students()
         elif choice == '0':
             print("Exiting...")
             break
