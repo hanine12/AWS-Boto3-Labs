@@ -99,6 +99,23 @@ def update_student():
             raise
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def delete_student():
+    student_id = input("Enter student ID to delete: ").strip()
+    try:
+        response=table.delete_item(
+            Key={'student_id': student_id},
+            ConditionExpression='attribute_exists(student_id)', 
+            ReturnValues='ALL_OLD'
+            
+        )
+        print(f"Deleted student: {response.get('Attributes',{}).get('name',student_id)}")
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
+            print(f"No student found with ID {student_id}.")
+        else:
+            raise
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def main():
     while True:
@@ -107,6 +124,7 @@ def main():
         print("2. Add Student")
         print("3. Get Student")
         print("4. Update Student")
+        print("5. Delete Student")
         print("0. Exit")
         choice = input("Enter your choice: ")
 
@@ -118,6 +136,8 @@ def main():
             get_student()
         elif choice == '4':
             update_student()
+        elif choice == '5':
+            delete_student()
         elif choice == '0':
             print("Exiting...")
             break
