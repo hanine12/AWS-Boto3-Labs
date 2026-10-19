@@ -1,6 +1,7 @@
 import boto3
 from botocore.exceptions import ClientError
 from decimal import Decimal, InvalidOperation
+from boto3.dynamodb.conditions import Key, Attr
 
 table_name = 'hanine_hosni_students'
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
@@ -136,6 +137,53 @@ def list_students():
     else:
         print(f"Total students: {len(items)}")
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def search_students_scan():
+    search_field = input("Enter the field to search by (name / student_id / age / program / year): ").strip()    
+    search_value = input(f"Enter the value to search for in {search_field}: ").strip()
+    if search_field =='id':
+        search_field = 'student_id'
+
+    if search_field not in ['name', 'student_id', 'age', 'program', 'year']:
+        print("Invalid search field. Please choose from name, student_id, age, program, or year.")
+        return
+    response = table.scan(
+        FilterExpression=Attr(search_field).eq(search_value)
+    )
+    items = response.get('Items', [])
+    for item in sorted(items, key=lambda x: x[search_field]):
+        print(f"ID: {item['student_id']:<6}, Name: {item.get('name', 'N/A'):<9}, Age: {item.get('age', 'N/A')}, Program: {item.get('program', 'N/A')}, Year: {item.get('year', 'N/A')}")
+    if len(items) == 0:
+        print(f"No students found with {search_field} = {search_value}.")
+    else:
+        print(f"Total students found: {len(items)}")
+
+        
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def search_students_query():
+    search_field = input("Enter the field to search by (name / student_id / age / program / year): ").strip()    
+    search_value = input(f"Enter the value to search for in {search_field}: ").strip()
+
+    if search_field =='id':
+        search_field = 'student_id'
+
+    if search_field not in ['name', 'student_id', 'age', 'program', 'year']:
+        print("Invalid search field. Please choose from name, student_id, age, program, or year.")
+        return
+    response = table.query(
+        KeyConditionExpression=Key(search_field).eq(search_value)
+    )
+    items = response.get('Items', [])
+    for item in sorted(items, key=lambda x: x[search_field]):
+        print(f"ID: {item['student_id']:<6}, Name: {item.get('name', 'N/A'):<9}, Age: {item.get('age', 'N/A')}, Program: {item.get('program', 'N/A')}, Year: {item.get('year', 'N/A')}")
+    if len(items) == 0:
+        print(f"No students found with {search_field} = {search_value}.")
+    else:
+        print(f"Total students found: {len(items)}")
+
+
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def main():
     while True:
@@ -146,6 +194,8 @@ def main():
         print("4. Update Student")
         print("5. Delete Student")
         print("6. List Students")
+        print("7. Search Students(query)")
+        print("8. Search Students(scan)")
         print("0. Exit")
         choice = input("Enter your choice: ")
 
@@ -161,6 +211,10 @@ def main():
             delete_student()
         elif choice == '6':
             list_students()
+        elif choice == '7':
+            search_students_query()
+        elif choice == '8':
+            search_students_scan()
         elif choice == '0':
             print("Exiting...")
             break
