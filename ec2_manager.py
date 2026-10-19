@@ -7,7 +7,7 @@ REGION = 'us-east-1'
 ec2 = boto3.client('ec2', region_name=REGION)
 ssm = boto3.client('ssm', region_name=REGION)
 
-T3_MICRO_PRICE = 0.0104  
+T3_MICRO_HOURLY = 0.0104  
 
 
 SG_NAME = "boto3-lab-web"
@@ -30,7 +30,7 @@ def estimate_cost(instance_id):
     uptime = now - launch
     hours = uptime.total_seconds() / 3600
 
-    cost = hours * T3_MICRO_PRICE
+    cost = hours * T3_MICRO_HOURLY
     print(f"Instance:  {instance_id}")
     print(f"Launched:  {launch.isoformat()}")
     print(f"Uptime:    {uptime}  ({hours:.3f} hours)")
@@ -39,6 +39,71 @@ def estimate_cost(instance_id):
 
     return cost
 
+
+def deploy_two_servers(student_name):
+
+    group_id = get_or_create_web_sg()
+    ami_id = get_latest_amazon_linux_ami()
+    user_data = build_user_data(student_name)
+
+    print(f"Using latest Amazon Linux 2023 AMI: {ami_id}")
+    response = ec2.run_instances(
+        ImageId=ami_id,
+        InstanceType='t3.micro',
+        MinCount=2,
+        MaxCount=2,
+        SecurityGroupIds=[group_id],
+        UserData=user_data,
+        TagSpecifications=[{
+            'ResourceType': 'instance',
+            'Tags': [
+                {'Key': 'Name', 'Value': 'boto3-lab-web'},
+                {'Key': 'CreatedBy', 'Value': 'boto3-lab'},
+            ],
+        }],
+    )
+
+    instances = response['Instances'] 
+    ids = [i['InstanceId'] for i in instances]
+
+    print(f"Launched {len(ids)} instances in ONE call: {ids}")
+    print("(Note: describe_instances will show them as ONE reservation with TWO instances.)")
+
+
+    print("Waiting for all to reach 'running' ...")
+    ec2.get_waiter('instance_running').wait(
+        InstanceIds=ids,
+        WaiterConfig={'Delay': 15, 'MaxAttempts': 40},
+    )
+    print("Waiting for status checks (OS boot) ...")
+    ec2.get_waiter('instance_status_ok').wait(
+        InstanceIds=ids,
+        WaiterConfig={'Delay': 15, 'MaxAttempts': 40},
+    )
+
+    # Print both URLs
+    detail = ec2.describe_instances(InstanceIds=ids)
+    urls = []
+    for res in detail['Reservations']:
+        for inst in res['Instances']:
+            ip = inst.get('PublicIpAddress')
+            if ip:
+                urls.append((inst['InstanceId'], f"http://{ip}/"))
+
+    print("\nServers ready:")
+    for iid, url in urls:
+        print(f"  {iid}  ->  {url}")
+
+    # Bonus: check both pages
+    for iid, url in urls:
+        try:
+            with urllib.request.urlopen(url, timeout=10) as r:
+                body = r.read(200).decode(errors='replace')
+                print(f"  {iid}: HTTP {r.status} — {body[:80]}")
+        except Exception as e:
+            print(f"  {iid}: check failed — {e}")
+
+    return ids
 
 def build_user_data(student_name):
     return USER_DATA_TEMPLATE.format(student_name=student_name)
@@ -310,7 +375,7 @@ def cleanup():
         for g in sg_ids:
             print("  ", g)
 
-    if input("Type YES to confirm: ").strip() != "YES":
+    if input("Type YES to confirm: ").strip().upper() != "YES":
         print("Cleanup aborted.")
         return
 
@@ -343,7 +408,8 @@ def main():
         print("8. Get latest AMI")
         print("9. Cleanup (terminate all boto3-lab instances + SGs)")
         print("10. Deploy Web Server (challenge)")
-        print("11. Estimate Cost")
+        print("11. Estimate Cost (challenge)")
+        print("12. Deploy Two Web Servers (challenge)")
         print("0. Exit")
 
         choice = input("Choose an option: ").strip()
@@ -376,6 +442,9 @@ def main():
             deploy_web_server(name)
         elif choice == "11":
             estimate_cost(input("Instance ID: ").strip())
+        elif choice == "12":
+            name = input("Your name (shown on the pages): ").strip() or "Student"
+            deploy_two_servers(name)
         elif choice == "0":
             break
         else:
