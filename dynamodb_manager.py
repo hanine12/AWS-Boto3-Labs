@@ -1,5 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
+from decimal import Decimal, InvalidOperation
 
 table_name = 'hanine_hosni_students'
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
@@ -70,6 +71,34 @@ def get_student():
     for key, value in response['Item'].items():
         print(f"{key:<14}: {value}")
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def update_student():
+    student_id = input("Enter student ID to update: ").strip()
+    field = input("Enter the field to update (name, age, program, year): ").strip()
+    value = input(f"Enter the new value for {field}: ").strip()
+
+    if field in ['year', 'age']:
+        try:
+            value = Decimal(value)
+        except (InvalidOperation):
+            print("year/age must be a number.")
+            return
+
+    try:
+        response = table.update_item(
+            Key={'student_id': student_id},
+            UpdateExpression=f"SET {field} = :val",
+            ExpressionAttributeValues={':val': value},
+            ConditionExpression='attribute_exists(student_id)',  
+            ReturnValues="ALL_NEW"
+        )
+        print("Updated:", response['Attributes'])
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
+            print(f"No student found with ID {student_id}.")
+        else:
+            raise
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def main():
     while True:
@@ -77,6 +106,7 @@ def main():
         print("1. Create Table")
         print("2. Add Student")
         print("3. Get Student")
+        print("4. Update Student")
         print("0. Exit")
         choice = input("Enter your choice: ")
 
@@ -86,6 +116,8 @@ def main():
             add_student()
         elif choice == '3':
             get_student()
+        elif choice == '4':
+            update_student()
         elif choice == '0':
             print("Exiting...")
             break
