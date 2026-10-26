@@ -375,8 +375,7 @@ def cleanup():
             print(f"Table '{TABLE_NAME}' does not exist — nothing to delete.")
         else:
             explain(e)
-    # TODO
-    print("TODO: cleanup")
+  
 
 
 # ======================================================== MENU ===========
@@ -403,7 +402,7 @@ MENU = """
 
 
 def main():
-    if STUDENT == "CHANGE_ME":
+    if STUDENT == "hanine hosni":
         print("Set STUDENT at the top of this file to your own name first.")
         sys.exit(1)
 
@@ -425,7 +424,7 @@ def main():
             elif choice == "2":
                 create_bucket()
             elif choice == "3":
-                size, content_type = upload_image()
+                size,content_type = upload_image()
             elif choice == "4":
                 list_bucket()
             elif choice == "5":
