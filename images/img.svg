@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 960" width="1600" height="960" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4b5b53"/></marker></defs>
+<rect width="1600" height="960" fill="#f7fbf8"/>
+<text x="30" y="40" font-size="20" font-weight="700" fill="#0f3d2e" text-anchor="start">DawaRadar : architecture serverless AWS</text>
+<rect x="30" y="150" width="170" height="58" rx="8" fill="#ffffff" stroke="#0f3d2e" stroke-width="1.5"/>
+<text x="115.0" y="176.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Citoyen</text>
+<text x="115.0" y="193.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">public, sans compte</text>
+<path d="M200 179 H240" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="30" y="240" width="170" height="58" rx="8" fill="#ffffff" stroke="#0f3d2e" stroke-width="1.5"/>
+<text x="115.0" y="266.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Pharmacien</text>
+<text x="115.0" y="283.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">JWT, son pharmacy-id</text>
+<path d="M200 269 H240" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="30" y="330" width="170" height="58" rx="8" fill="#ffffff" stroke="#0f3d2e" stroke-width="1.5"/>
+<text x="115.0" y="356.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Autorité sanitaire</text>
+<text x="115.0" y="373.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">lecture globale</text>
+<path d="M200 359 H240" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="30" y="420" width="170" height="58" rx="8" fill="#ffffff" stroke="#0f3d2e" stroke-width="1.5"/>
+<text x="115.0" y="446.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Admin système</text>
+<text x="115.0" y="463.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">validation, référentiels</text>
+<path d="M200 449 H240" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="220" y="132" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">HTTPS</text>
+<rect x="30" y="510" width="170" height="58" rx="8" fill="#ffffff" stroke="#0f3d2e" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="115.0" y="536.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Simulateur de stocks</text>
+<text x="115.0" y="553.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">script, appelle l'API</text>
+<rect x="240" y="110" width="220" height="420" rx="8" fill="#effaf3" stroke="#2e9e6b" stroke-width="1.5"/>
+<text x="350" y="134" font-size="13" font-weight="700" fill="#12231c" text-anchor="middle">Amazon S3 : site statique</text>
+<rect x="255" y="160" width="190" height="50" rx="8" fill="#ddf1e4" stroke="#2e9e6b" stroke-width="1.5"/>
+<text x="350.0" y="182.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Portail citoyen</text>
+<text x="350.0" y="199.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">HTML5 / CSS3 / JS</text>
+<rect x="255" y="225" width="190" height="50" rx="8" fill="#ddf1e4" stroke="#2e9e6b" stroke-width="1.5"/>
+<text x="350.0" y="247.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Espace pharmacien</text>
+<text x="350.0" y="264.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">HTML5 / CSS3 / JS</text>
+<rect x="255" y="290" width="190" height="50" rx="8" fill="#ddf1e4" stroke="#2e9e6b" stroke-width="1.5"/>
+<text x="350.0" y="312.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Dashboard autorité</text>
+<text x="350.0" y="329.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">HTML5 / CSS3 / JS</text>
+<rect x="255" y="355" width="190" height="50" rx="8" fill="#ddf1e4" stroke="#2e9e6b" stroke-width="1.5"/>
+<text x="350.0" y="377.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Administration</text>
+<text x="350.0" y="394.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">HTML5 / CSS3 / JS</text>
+<rect x="520" y="110" width="170" height="420" rx="8" fill="#f6eefb" stroke="#8a4fb5" stroke-width="1.5"/>
+<text x="605" y="134" font-size="13" font-weight="700" fill="#12231c" text-anchor="middle">Amazon API Gateway</text>
+<text x="605" y="150" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">REST API</text>
+<text x="540" y="188" font-size="12" font-weight="500" fill="#12231c" text-anchor="start">/auth</text>
+<text x="540" y="216" font-size="12" font-weight="500" fill="#12231c" text-anchor="start">/medicines</text>
+<text x="540" y="244" font-size="12" font-weight="500" fill="#12231c" text-anchor="start">/pharmacies</text>
+<text x="540" y="272" font-size="12" font-weight="500" fill="#12231c" text-anchor="start">/stocks</text>
+<text x="540" y="300" font-size="12" font-weight="500" fill="#12231c" text-anchor="start">/stocks/search</text>
+<text x="540" y="328" font-size="12" font-weight="500" fill="#12231c" text-anchor="start">/subscriptions</text>
+<text x="540" y="356" font-size="12" font-weight="500" fill="#12231c" text-anchor="start">/alerts</text>
+<text x="605" y="440" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">Rate limiting</text>
+<text x="605" y="456" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">CORS · format des requêtes</text>
+<text x="605" y="472" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">Vérification du JWT</text>
+<path d="M460 300 H520" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="490" y="292" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">fetch</text>
+<path d="M200 539 H215 V562 H605 V530" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="410" y="578" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">POST /stocks</text>
+<rect x="740" y="100" width="250" height="470" rx="8" fill="#fff6ea" stroke="#e07b00" stroke-width="1.5"/>
+<text x="865" y="560" font-size="12" font-weight="700" fill="#12231c" text-anchor="middle">AWS Lambda · rôle LabRole</text>
+<rect x="755" y="150" width="220" height="46" rx="8" fill="#fde9d3" stroke="#e07b00" stroke-width="1.5"/>
+<text x="865.0" y="170.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Alerts &amp; Coverage</text>
+<text x="865.0" y="187.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">jours de couverture, alertes</text>
+<rect x="755" y="206" width="220" height="46" rx="8" fill="#fde9d3" stroke="#e07b00" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="865.0" y="226.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Auth*</text>
+<text x="865.0" y="243.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">inscription, connexion, JWT</text>
+<rect x="755" y="262" width="220" height="46" rx="8" fill="#fde9d3" stroke="#e07b00" stroke-width="1.5"/>
+<text x="865.0" y="282.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Medicines</text>
+<text x="865.0" y="299.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">référentiel DCI, génériques</text>
+<rect x="755" y="318" width="220" height="46" rx="8" fill="#fde9d3" stroke="#e07b00" stroke-width="1.5"/>
+<text x="865.0" y="338.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Pharmacies</text>
+<text x="865.0" y="355.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">profil, validation des comptes</text>
+<rect x="755" y="374" width="220" height="46" rx="8" fill="#fde9d3" stroke="#e07b00" stroke-width="1.5"/>
+<text x="865.0" y="394.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Stocks</text>
+<text x="865.0" y="411.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">déclaration, ventes, anomalies</text>
+<rect x="755" y="430" width="220" height="46" rx="8" fill="#fde9d3" stroke="#e07b00" stroke-width="1.5"/>
+<text x="865.0" y="450.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Search</text>
+<text x="865.0" y="467.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">geohash, Haversine, génériques</text>
+<rect x="755" y="486" width="220" height="46" rx="8" fill="#fde9d3" stroke="#e07b00" stroke-width="1.5"/>
+<text x="865.0" y="506.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Subscriptions</text>
+<text x="865.0" y="523.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">abonnements citoyens</text>
+<path d="M690 300 H740" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="715" y="292" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">event</text>
+<rect x="1230" y="100" width="260" height="500" rx="8" fill="#eef4fd" stroke="#3b6fd4" stroke-width="1.5"/>
+<text x="1360" y="124" font-size="13" font-weight="700" fill="#12231c" text-anchor="middle">Amazon DynamoDB</text>
+<rect x="1245" y="150" width="230" height="46" rx="8" fill="#dce9fb" stroke="#3b6fd4" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="1360.0" y="170.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Users*</text>
+<text x="1360.0" y="187.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">email, rôle, pharmacy-id</text>
+<rect x="1245" y="206" width="230" height="46" rx="8" fill="#dce9fb" stroke="#3b6fd4" stroke-width="1.5"/>
+<text x="1360.0" y="226.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Medicines</text>
+<text x="1360.0" y="243.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">PK medicine-id</text>
+<rect x="1245" y="262" width="230" height="46" rx="8" fill="#dce9fb" stroke="#3b6fd4" stroke-width="1.5"/>
+<text x="1360.0" y="282.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Pharmacies</text>
+<text x="1360.0" y="299.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">PK pharmacy-id · GSI geohash</text>
+<rect x="1245" y="318" width="230" height="46" rx="8" fill="#dce9fb" stroke="#3b6fd4" stroke-width="1.5"/>
+<text x="1360.0" y="338.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Subscriptions</text>
+<text x="1360.0" y="355.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">PK user-id / SK subscription-id</text>
+<rect x="1245" y="374" width="230" height="46" rx="8" fill="#dce9fb" stroke="#3b6fd4" stroke-width="1.5"/>
+<text x="1360.0" y="394.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Alerts</text>
+<text x="1360.0" y="411.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">PK governorate / SK alert-id</text>
+<rect x="1245" y="430" width="230" height="46" rx="8" fill="#dce9fb" stroke="#3b6fd4" stroke-width="1.5"/>
+<text x="1360.0" y="450.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Anomalies</text>
+<text x="1360.0" y="467.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">PK pharmacy-id / SK anomaly-id</text>
+<rect x="1245" y="486" width="230" height="46" rx="8" fill="#dce9fb" stroke="#3b6fd4" stroke-width="1.5"/>
+<text x="1360.0" y="506.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">StockHistory</text>
+<text x="1360.0" y="523.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">PK medicine-id / SK gov-timestamp</text>
+<rect x="1245" y="542" width="230" height="46" rx="8" fill="#dce9fb" stroke="#3b6fd4" stroke-width="1.5"/>
+<text x="1360.0" y="562.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Stocks</text>
+<text x="1360.0" y="579.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">PK pharmacy-id / SK medicine-id · GSI</text>
+<path d="M990 300 H1230" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="1110" y="292" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">lecture / écriture</text>
+<rect x="830" y="20" width="200" height="52" rx="8" fill="#fbdde7" stroke="#d14b7c" stroke-width="1.5"/>
+<text x="930.0" y="43.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Amazon EventBridge</text>
+<text x="930.0" y="60.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">cron chaque nuit</text>
+<path d="M930 72 V150" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="520" y="20" width="170" height="52" rx="8" fill="#ddf1e4" stroke="#2e9e6b" stroke-width="1.5"/>
+<text x="605.0" y="43.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Amazon S3 : rapports</text>
+<text x="605.0" y="60.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">CSV / JSON par gouvernorat</text>
+<path d="M765 150 V46 H690" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="240" y="664" font-size="12" font-weight="700" fill="#5b6b63" text-anchor="start">Traitement événementiel</text>
+<rect x="1245" y="690" width="230" height="52" rx="8" fill="#fbdde7" stroke="#d14b7c" stroke-width="1.5"/>
+<text x="1360.0" y="713.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">DynamoDB Streams</text>
+<text x="1360.0" y="730.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">sur la table Stocks</text>
+<path d="M1360 588 V690" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="900" y="690" width="250" height="52" rx="8" fill="#fde9d3" stroke="#e07b00" stroke-width="1.5"/>
+<text x="1025.0" y="713.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Lambda Stream</text>
+<text x="1025.0" y="730.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">Z-score, transition 0 → +</text>
+<path d="M1245 716 H1150" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="560" y="690" width="250" height="52" rx="8" fill="#fde9d3" stroke="#e07b00" stroke-width="1.5"/>
+<text x="685.0" y="713.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Lambda Notifications</text>
+<text x="685.0" y="730.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">une alerte par épisode</text>
+<path d="M900 716 H810" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="240" y="690" width="250" height="52" rx="8" fill="#ffffff" stroke="#4b5b53" stroke-width="1.5"/>
+<text x="365.0" y="713.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Notification citoyen</text>
+<text x="365.0" y="730.0" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">cloche ou e-mail</text>
+<path d="M560 716 H490" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="30" y="690" width="170" height="52" rx="8" fill="#ffffff" stroke="#0f3d2e" stroke-width="1.5"/>
+<text x="115.0" y="721.0" font-size="13" font-weight="600" fill="#12231c" text-anchor="middle">Citoyen abonné</text>
+<path d="M240 716 H200" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1100 690 V625 H1210 V453 H1245" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)" stroke-dasharray="5 4"/>
+<text x="1094" y="618" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="end">écrit Anomalies et Alerts</text>
+<path d="M700 690 V642 H1190 V341 H1245" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)" stroke-dasharray="5 4"/>
+<text x="706" y="658" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="start">lit Subscriptions</text>
+<rect x="240" y="800" width="1250" height="56" rx="8" fill="#eceeed" stroke="#7a8780" stroke-width="1.5"/>
+<text x="865" y="824" font-size="13" font-weight="700" fill="#12231c" text-anchor="middle">Amazon CloudWatch</text>
+<text x="865" y="842" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="middle">logs centralisés, métriques et alarmes</text>
+<path d="M855 570 V800" fill="none" stroke="#4b5b53" stroke-width="1.5" marker-end="url(#a)" stroke-dasharray="5 4"/>
+<text x="862" y="790" font-size="11" font-weight="400" fill="#5b6b63" text-anchor="start">logs de tous les Lambdas</text>
+<text x="30" y="906" font-size="12" font-weight="400" fill="#5b6b63" text-anchor="start">* Ajout de l'équipe : le cahier liste 7 tables et aucune pour les comptes, nous ajoutons la table Users et la Lambda Auth (traits pointillés).</text>
+<text x="30" y="928" font-size="12" font-weight="400" fill="#5b6b63" text-anchor="start">Tous les Lambdas utilisent le rôle existant LabRole (création de rôles IAM bloquée dans le Learner Lab).</text>
+</svg>
